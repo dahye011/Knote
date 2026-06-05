@@ -384,7 +384,7 @@ document.body.appendChild(floatingBtn);
 function updateFloatingBtn(pageName) {
     if ((pageName === 'gallery' || pageName === 'pattern-gallery') && currentUser) {
         floatingBtn.style.display = 'block';
-        // 클릭 시 해당 페이지에 맞는 등록 페이지로 이동
+        // 클릭 시 해당 페이지에 맞는 등록 페이지로 이동x
         floatingBtn.onclick = () => {
             if (pageName === 'gallery') {
                 showPage('add-project');
@@ -408,10 +408,24 @@ document.getElementById('logoBtn').addEventListener('click', () => {
     showPage('home');
 });
 
+// ===== 햄버거 메뉴 =====
+const navHamburger = document.getElementById('navHamburger');
+const navMenu = document.getElementById('navMenu');
+
+navHamburger.addEventListener('click', () => {
+    const isOpen = navMenu.classList.toggle('nav-open');
+    navHamburger.classList.toggle('is-open', isOpen);
+    navHamburger.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+});
+
 // ===== 네비게이션 =====
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
+        // 모바일 메뉴 닫기
+        navMenu.classList.remove('nav-open');
+        navHamburger.classList.remove('is-open');
+
         const page = link.dataset.page;
         
         if (page === 'add-project' || page === 'my-works' || page === 'pattern-register' || page === 'my-patterns') {
@@ -555,7 +569,7 @@ function updateAuthUI() {
         btn.replaceWith(btn.cloneNode(true));
         const newBtn = document.getElementById('loginBtn');
         
-        // 로그인 모달 열기 리스너 추가
+        // 로그인 모달 열기
         newBtn.addEventListener('click', () => {
             pendingPage = 'my-page';
             document.getElementById('authModal').classList.add('show');
@@ -566,7 +580,7 @@ function updateAuthUI() {
 }
 
 function renderMyPage() {
-    // 내 작품 — 현재 로그인 유저가 등록한 것만
+    // 내 작품
     const myProjects = projects.filter(p =>
         currentUser && (
             p.userId === currentUser.id ||
@@ -591,7 +605,7 @@ function renderMyPage() {
         `).join('');
     }
     
-    // 내 도안 렌더링 — 현재 로그인 유저가 등록한 것만
+    // 내 도안
     const patternsGrid = document.getElementById('myPagePatternsGrid');
     const myPatterns = patterns.filter(p =>
         currentUser && (
@@ -829,7 +843,7 @@ patternCancelBtn.addEventListener('click', () => {
     patternForm.reset();
 });
 
-// ===== 향상된 도안 번역 - 숫자+약자 처리 및 순서 최적화 =====
+// ===== 도안 번역  =====
 function advancedTranslate(text, toKorean = null) {
     // 숫자+약자를 숫자 + 공백 + 약자로 변환 (예: 1rnd → 1 rnd)
     let normalized = text.replace(/(\d+)([a-z]+)/gi, '$1 $2');
@@ -1211,13 +1225,12 @@ function showPatternDetail(id) {
     const pattern = patterns.find(p => p.id === id) || communityPatterns.find(p => p.id === id);
     if (!pattern) return;
 
-    // 상세 페이지 DOM이 아직 없으면 생성
     if (!document.getElementById('patternDetailPage')) {
         createPatternDetailPage();
         pages['pattern-detail'] = document.getElementById('patternDetailPage');
     }
 
-    // 조회수 증가 (커뮤니티 더미도 증가)
+    // 조회수 증가
     pattern.views = (pattern.views || 0) + 1;
     if (patterns.find(p => p.id === id)) savePatterns();
 
@@ -1283,7 +1296,7 @@ function showPatternDetail(id) {
                 </div>`;
         }
 
-        // ── PDF: 파일마다 단독 iframe (탭 없이 순서대로 표시) ──
+        // ── PDF ──
         pdfFiles.forEach(f => {
             viewerHtml += `
                 <div class="pd-viewer-block">
