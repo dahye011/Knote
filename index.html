@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knote - 뜨개질 아카이브</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo" id="logoBtn">KNOTE</div>
+            <ul class="nav-menu">
+                <li><a href="#" data-page="gallery" class="nav-link">피드</a></li>
+                <li class="nav-divider">|</li>
+                <li><a href="#" data-page="add-project" class="nav-link">작품 등록</a></li>
+                <li><a href="#" data-page="pattern-gallery" class="nav-link">도안 갤러리</a></li>
+                <li><a href="#" data-page="pattern-register" class="nav-link">도안 등록</a></li>
+                <li><a href="#" data-page="translate" class="nav-link">도안 번역</a></li>
+                <li id="authBtn" class="auth-wrap">
+                    <button class="btn-login" id="loginBtn" type="button">로그인</button>
+                    <div id="userMenu" class="user-menu" aria-hidden="true">
+                        <button type="button" id="mypageBtn">마이페이지</button>
+                        <button type="button" id="logoutMenuBtn">로그아웃</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="app">
+        <!-- 홈 페이지 -->
+        <div id="homePage" class="page active">
+            <!-- 히어로 섹션 -->
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">ARCHIVE<br>YOUR<br>KNITTING</h1>
+                        <p class="hero-subtitle">당신의 뜨개질 창작물을 모두 기록하세요.</p>
+                    </div>
+                    <div class="hero-images">
+                        <div id="imageSlider" class="image-slider">
+                            <img src="images/image1.png" alt="뜨개 작업 중 이미지" class="slide-image active">
+                            <img src="images/image2.png" alt="뜨개 가방 작품 이미지" class="slide-image">
+                            <img src="images/image3.png" alt="게이지 스와치 이미지" class="slide-image">
+                            <img src="images/image4.png" alt="뜨개 완성 이미지" class="slide-image">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 갤러리 미리보기 -->
+            <section class="community-preview">
+                <div class="section-container">
+                    <h2>최근 작품</h2>
+                    <div id="previewGrid" class="preview-grid-images-only"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 갤러리 페이지 -->
+        <div id="galleryPage" class="page">
+            <div class="section-container">
+                <div class="page-title-row">
+                    <h2 class="page-title">피드</h2>
+                    <div class="sort-bar">
+                        <button class="sort-btn active" id="feedSortNewest" onclick="setFeedSort('newest')">최신순</button>
+                        <button class="sort-btn" id="feedSortOldest" onclick="setFeedSort('oldest')">오래된순</button>
+                    </div>
+                </div>
+                <div id="galleryFeed" class="community-feed"></div>
+            </div>
+        </div>
+
+        <!-- 도안 갤러리 페이지 -->
+        <div id="patternGalleryPage" class="page">
+            <div class="section-container">
+                <div class="page-title-row">
+                    <h2 class="page-title">도안 갤러리</h2>
+                    <div class="sort-bar">
+                        <button class="sort-btn active" id="pgSortNewest" onclick="setPgSort('newest')">최신순</button>
+                        <button class="sort-btn" id="pgSortOldest" onclick="setPgSort('oldest')">오래된순</button>
+                    </div>
+                </div>
+
+                <!-- 필터 바 -->
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <span class="filter-label">뜨개방식</span>
+                        <div class="filter-chips" id="filterNeedle">
+                            <button class="filter-chip active" data-value="">전체</button>
+                            <button class="filter-chip" data-value="대바늘">대바늘</button>
+                            <button class="filter-chip" data-value="코바늘">코바늘</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">작품종류</span>
+                        <div class="filter-chips" id="filterCategory">
+                            <button class="filter-chip active" data-value="">전체</button>
+                            <button class="filter-chip" data-value="모자">모자</button>
+                            <button class="filter-chip" data-value="목도리">목도리</button>
+                            <button class="filter-chip" data-value="가디건">가디건</button>
+                            <button class="filter-chip" data-value="기타 의류">기타 의류</button>
+                            <button class="filter-chip" data-value="인형">인형</button>
+                            <button class="filter-chip" data-value="기타 소품">기타 소품</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">난이도</span>
+                        <div class="filter-chips" id="filterLevel">
+                            <button class="filter-chip active" data-value="">전체</button>
+                            <button class="filter-chip" data-value="초급">초급</button>
+                            <button class="filter-chip" data-value="중급">중급</button>
+                            <button class="filter-chip" data-value="고급">고급</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="patternGalleryFeed" class="pattern-gallery-grid"></div>
+            </div>
+        </div>
+
+        <!-- 작품 등록 페이지 -->
+        <div id="addProjectPage" class="page">
+            <div class="form-container">
+                <h2 class="page-title">작품 등록하기</h2>
+                <form id="projectForm" class="styled-form">
+                    <div class="form-section">
+                        <h3>기본 정보</h3>
+                        <div class="form-group">
+                            <label>제목</label>
+                            <input type="text" id="formTitle" placeholder="작품의 이름을 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>설명</label>
+                            <textarea id="formDescription" placeholder="작품에 대한 설명" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>사진</label>
+                            <input type="file" id="formImage" accept="image/*" style="padding: 0.8rem; border: 2px dashed var(--color-brown); border-radius: 10px; background: white;">
+                            <small>jpg, png 등 이미지 파일을 선택하세요</small>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>사용 재료</h3>
+                        <div id="yarnInputs" class="inputs-wrapper">
+                            <div class="yarn-input-group">
+                                <input type="text" placeholder="재료명 (예: Merino)" class="yarn-name">
+                                <input type="text" placeholder="양 (예: 200g)" class="yarn-amount">
+                            </div>
+                        </div>
+                        <button type="button" id="addYarnBtn" class="btn-add">+ 재료 추가</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>바늘 정보</h3>
+                        <div id="needleInputs" class="inputs-wrapper">
+                            <div class="needle-input-group">
+                                <input type="text" placeholder="바늘 (예: US #6)" class="needle-input">
+                            </div>
+                        </div>
+                        <button type="button" id="addNeedleBtn" class="btn-add">+ 바늘 추가</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>제작 정보</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>완성일</label>
+                                <input type="date" id="formDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>소요시간</label>
+                                <input type="text" id="formTime" placeholder="예: 120 hrs" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>메모</h3>
+                        <textarea id="formNotes" placeholder="작품에 대한 추가 메모" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">등록하기</button>
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 도안 등록 페이지 -->
+        <div id="patternRegisterPage" class="page">
+            <div class="form-container">
+                <h2 class="page-title">도안 등록하기</h2>
+                <form id="patternForm" class="styled-form">
+                    <div class="form-section">
+                        <h3>📋 기본 정보</h3>
+                        <div class="form-group">
+                            <label>도안명</label>
+                            <input type="text" id="patternName" placeholder="도안의 이름을 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>설명</label>
+                            <textarea id="patternDesc" placeholder="도안의 특징, 완성 작품 설명 등을 입력하세요" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>뜨개 방식</label>
+                                <select id="patternNeedleType" required>
+                                    <option value="" disabled selected>선택</option>
+                                    <option value="대바늘">대바늘</option>
+                                    <option value="코바늘">코바늘</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>작품 종류</label>
+                                <select id="patternCategory" required>
+                                    <option value="" disabled selected>선택</option>
+                                    <option value="모자">모자</option>
+                                    <option value="목도리">목도리</option>
+                                    <option value="기타 의류">기타 의류</option>
+                                    <option value="인형">인형</option>
+                                    <option value="기타 소품">기타 소품</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>난이도</label>
+                                <select id="patternLevel" required>
+                                    <option value="" disabled selected>선택</option>
+                                    <option value="초급">초급</option>
+                                    <option value="중급">중급</option>
+                                    <option value="고급">고급</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>예상 제작 시간</label>
+                                <input type="text" id="patternTime" placeholder="예) 5시간, 3~4시간">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📝 도안 내용</h3>
+                        <div class="form-group">
+                            <label>도안 텍스트</label>
+                            <textarea id="patternContent" placeholder="도안을 입력하세요&#10;예: Row 1: K2, P2 repeat..." rows="6"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>첨부 파일 <span style="font-weight:400; color:var(--text-light); font-size:0.8rem;">(이미지 또는 PDF, 선택)</span></label>
+                            <div class="pf-upload-zone" id="pfUploadZone">
+                                <div class="pf-upload-icon">📎</div>
+                                <div class="pf-upload-text">이미지 또는 PDF를 여기에 드래그하거나 클릭하여 선택</div>
+                                <div class="pf-upload-hint">JPG, PNG, PDF 지원</div>
+                            </div>
+                            <div id="patternFileList" class="pf-file-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>🔍 출처</h3>
+                        <div class="radio-options">
+                            <label class="radio-group">
+                                <input type="radio" name="patternSource" value="own" required> 본인 작성
+                            </label>
+                            <label class="radio-group">
+                                <input type="radio" name="patternSource" value="free" required> 무료 도안
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">등록하기</button>
+                        <button type="button" class="btn btn-secondary" id="patternCancelBtn">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 도안 번역 페이지 -->
+        <div id="translatePage" class="page">
+            <div class="section-container">
+                <h2 class="page-title">도안 번역하기</h2>
+                <div class="translate-info">
+                    <p>뜨개질 도안의 약자를 한글/영문으로 번역해주는 도구입니다.</p>
+                    <p>지원하는 용어: K, P, sc, dc, tr, sl st, ch, inc, dec, sk, sp, st, rnd, yo, k2tog, psso, yo2, bl, fo, esc</p>
+                </div>
+                <div class="translate-container">
+                    <div class="translate-box">
+                        <h3>입력</h3>
+                        <textarea id="patternInput" placeholder="영문 또는 한글 도안을 입력하세요&#10;예: Row 1: K2, P2 repeat&#10;또는&#10;1단: 평뜨기 2, 역평뜨기 2 반복" rows="8"></textarea>
+                    </div>
+                    <div class="translate-actions">
+                        <button id="translateBtn" class="btn btn-primary">번역하기</button>
+                    </div>
+                    <div class="translate-box">
+                        <h3>결과</h3>
+                        <div id="translationOutput" class="translation-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 마이페이지 -->
+        <div id="myPagePage" class="page">
+            <div class="section-container">
+                <h2 class="page-title">마이페이지</h2>
+
+                <div class="mypage-section">
+                    <h3>내 작품 (<span id="myWorksCount">0</span>)</h3>
+                    <div id="mypageWorksGrid" class="works-grid"></div>
+                </div>
+
+                <div class="mypage-section">
+                    <h3>내 도안 (<span id="myPatternsCount">0</span>)</h3>
+                    <div id="myPagePatternsGrid" class="pattern-gallery-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 내 작품 페이지 -->
+        <div id="myWorksPage" class="page">
+            <div class="section-container">
+                <h2 class="page-title">내 작품</h2>
+                <div id="myWorksGrid" class="works-grid"></div>
+            </div>
+        </div>
+
+        <!-- 내 도안 페이지 -->
+
+        <div id="myPatternsPage" class="page">
+            <div class="section-container">
+                <h2 class="page-title">내 도안</h2>
+                <div id="myPatternsList" class="patterns-list"></div>
+            </div>
+        </div>
+
+        <!-- 작품 상세 페이지 -->
+        <div id="projectDetailPage" class="page">
+            <div class="section-container">
+                <button class="btn-back" id="backBtn">← 돌아가기</button>
+                <div class="detail-container">
+                    <div class="detail-image" id="detailImage"></div>
+                    <div class="detail-content">
+                        <h2 id="detailTitle"></h2>
+                        <p id="detailDescription"></p>
+                        <div class="detail-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">재료</span>
+                                <div id="detailYarn"></div>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">바늘</span>
+                                <div id="detailNeedle"></div>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">소요시간</span>
+                                <span id="detailTime"></span>
+                            </div>
+                        </div>
+                        <div class="detail-notes">
+                            <h3>메모</h3>
+                            <p id="detailNotes"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 로그인/회원가입 모달 -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeAuthBtn">&times;</button>
+            <div id="loginForm" class="auth-form">
+                <h2>로그인</h2>
+                <form id="loginFormEl">
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" placeholder="이메일" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="비밀번호" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">로그인</button>
+                </form>
+                <p class="modal-link">계정이 없으신가요? <a href="#" id="signupLink">회원가입</a></p>
+            </div>
+
+            <div id="signupForm" class="auth-form" style="display: none;">
+                <h2>회원가입</h2>
+                <form id="signupFormEl">
+                    <div class="form-group">
+                        <input type="text" id="signupName" placeholder="이름" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signupEmail" placeholder="이메일" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signupPassword" placeholder="비밀번호" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">회원가입</button>
+                </form>
+                <p class="modal-link">이미 계정이 있으신가요? <a href="#" id="loginLink">로그인</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
