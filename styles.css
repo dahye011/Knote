@@ -137,6 +137,48 @@ body::before {
     transform: translateY(-2px);
 }
 
+/* ── 햄버거 버튼 (데스크탑에서는 숨김) ── */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.nav-hamburger:hover {
+    background: var(--bg-secondary, #faf8f5);
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-brown);
+    border-radius: 2px;
+    transition: all 0.28s ease;
+    transform-origin: center;
+}
+
+.nav-hamburger.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.is-open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.nav-hamburger.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
 .btn-login {
     padding: 0.7rem 1.8rem;
     background: var(--color-brown);
@@ -332,7 +374,7 @@ body::before {
     padding: 0 4rem;
 }
 
-/* 히어로 섹션 - 비대칭 레이아웃 */
+/* 히어로 섹션 */
 .hero {
     min-height: 85vh;
     display: flex;
@@ -618,7 +660,6 @@ body::before {
     letter-spacing: -1px;
 }
 
-/* 스타일된 폼 */
 .styled-form {
     animation: slideUp 0.5s ease;
 }
@@ -997,7 +1038,7 @@ body::before {
     font-weight: 700;
 }
 
-/* 마이페이지 작품/도안 그리드 — 더 작은 카드 */
+/* 마이페이지 작품/도안 그리드 */
 #mypageWorksGrid.works-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.5rem;
@@ -1297,7 +1338,7 @@ body::before {
     margin-top: 3rem;
 }
 
-/* 도안 상세 — 새 레이아웃 */
+/* 도안 상세*/
 .pattern-detail-page-layout {
     display: grid;
     grid-template-columns: 1fr 1px 360px;
@@ -1482,7 +1523,6 @@ body::before {
     padding: 1rem;
 }
 
-/* PDF 탭 패널은 패딩 없이 iframe을 꽉 채움 */
 .pd-pdf-panels {
     padding: 0;
 }
@@ -1528,7 +1568,7 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    overflow: hidden; /* 패널 전체는 넘침 숨김 */
+    overflow: hidden;
 }
 
 /* 스크롤 가능한 카드 영역 (도안 정보 + 첨부파일) */
@@ -1541,9 +1581,9 @@ body::before {
     padding-right: 2px; /* 스크롤바 여백 */
 }
 
-/* 도안 내용 보기 버튼 — 패널 하단에 항상 고정 */
+/* 도안 내용 보기 버튼 */
 .pd-nav-card {
-    flex-shrink: 0; /* 절대 줄어들지 않음 */
+    flex-shrink: 0;
 }
 
 /* 좌우 구분선 */
@@ -2035,7 +2075,16 @@ body::before {
 @media (max-width: 1024px) {
     .hero-content {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
+    }
+
+    .hero-images {
+        margin-top: 0;
+        order: 2; /* 이미지가 항상 텍스트 아래 */
+    }
+
+    .hero-text {
+        order: 1;
     }
 
     .translate-container {
@@ -2056,83 +2105,160 @@ body::before {
 }
 
 @media (max-width: 768px) {
+    /* ── 네비게이션: 햄버거 메뉴 ── */
     .navbar {
-        padding: 1rem 2rem;
+        padding: 1rem 1.2rem;
+        position: relative;
     }
 
     .logo {
         font-size: 1.3rem;
     }
 
-    .nav-menu {
-        gap: 0.2rem;
+    /* 데스크탑에서 햄버거 숨김 */
+    .nav-hamburger {
+        display: flex;
     }
 
-    .nav-link {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.65rem;
-        letter-spacing: 0.3px;
+    /* 모바일에서 nav-menu: 기본 숨김 → nav-open 시 드롭다운 */
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary, #fff);
+        box-shadow: 0 8px 24px rgba(42,37,32,0.12);
+        border-top: 1px solid rgba(139,115,85,0.1);
+        padding: 0.6rem 0;
+        z-index: 200;
+    }
+
+    .nav-menu.nav-open {
+        display: flex;
+    }
+
+    .nav-menu li {
+        width: 100%;
     }
 
     .nav-divider {
         display: none;
     }
 
+    .nav-link {
+        display: block;
+        padding: 0.85rem 1.5rem;
+        font-size: 0.88rem;
+        letter-spacing: 0.3px;
+        border-radius: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .nav-link:hover {
+        background: var(--bg-secondary, #faf8f5);
+    }
+
+    .auth-wrap {
+        padding: 0.6rem 1.5rem 0.8rem;
+    }
+
+    .btn-login {
+        width: 100%;
+    }
+
+    /* ── 히어로: 겹침 방지 ── */
     .hero {
-        padding: 3rem 2rem;
+        padding: 2.5rem 1.5rem;
         min-height: auto;
     }
 
-    .hero-text h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
+    .hero-content {
+        gap: 1.8rem;
     }
 
-    .hero-content {
-        gap: 2rem;
+    .hero-text h1 {
+        font-size: clamp(2rem, 10vw, 2.8rem);
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
     }
 
     .image-slider {
-        height: 280px;
+        height: 240px;
     }
 
+    /* ── 섹션 ── */
     .section-container {
-        padding: 0 2rem;
+        padding: 0 1.2rem;
     }
 
     .community-preview {
-        padding: 4rem 2rem;
+        padding: 3rem 1.2rem;
     }
 
     .community-preview h2 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
     }
 
     .preview-grid-images-only {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
+    /* ── 폼 ── */
     .form-container {
-        padding: 2rem 1rem;
+        padding: 1.5rem 1rem;
     }
 
     .form-section {
-        padding: 1.5rem;
-        margin-bottom: 2rem;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* 사용 재료: 세로로 쌓기 */
+    .yarn-input-group,
+    .needle-input-group {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    .yarn-name,
+    .yarn-amount,
+    .needle-input {
+        flex: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* ── 필터/정렬 ── */
+    .filter-bar {
+        padding: 0.8rem;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
     }
 
     .translate-box {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
     .floating-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
-        bottom: 1.5rem;
-        right: 1.5rem;
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+        bottom: 1.2rem;
+        right: 1.2rem;
     }
 
     .patterns-list {
@@ -2140,26 +2266,24 @@ body::before {
     }
 
     .pattern-gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* ── 도안 상세 우측 패널 ── */
+    .pattern-detail-right {
+        position: static;
+        height: auto;
+        overflow: visible;
     }
 }
 
 @media (max-width: 480px) {
-    .nav-menu {
-        gap: 0.2rem;
-    }
-
-    .nav-link {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.55rem;
-    }
-
     .hero-text h1 {
-        font-size: 1.8rem;
+        font-size: clamp(1.6rem, 8vw, 2rem);
     }
 
     .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .btn {
@@ -2178,5 +2302,10 @@ body::before {
 
     .works-grid {
         grid-template-columns: 1fr;
+    }
+
+    .preview-grid-images-only {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
     }
 }
